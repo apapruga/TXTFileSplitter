@@ -2,19 +2,20 @@
 
 [Русский](./README.md) | **English**
 
-A GUI application for splitting large text files into several parts based on a
-configurable size limit. Written in Python using Tkinter — no external
-dependencies required.
+A tool for splitting large text files into several parts based on a configurable
+size limit. Available in two variants: a **web interface** (Flask) and a
+**desktop application** (Tkinter). The splitting logic is shared by both.
 
 ---
 
 ## Features
 
-- 🖱 **Graphical interface** — file/folder pickers, execution log, progress bar.
+- 🌐 **Web interface** — pick a file, configure options, and download the result in the browser.
+- 🖱 **Desktop interface (Tkinter)** — a classic window with an execution log and progress bar.
 - ✂️ **Three splitting modes** — by size, by line, or by a custom separator.
 - 🔎 **Automatic encoding detection** — UTF-8 (including BOM), CP1251, Latin-1.
-- ⚙️ **Background processing** — the UI stays responsive while working.
-- 📂 **Open the output folder** in the system file manager with one click.
+- 📦 **Zip download** — in the web version, all parts are packed into a single archive; nothing is stored on the server's disk.
+- ⚙️ **Background processing** — the desktop UI stays responsive while working.
 - 🍎 **Double-click launch** on macOS via the `start.command` file.
 
 ---
@@ -64,24 +65,50 @@ For the "By size only" mode the encoding is not detected — the file is process
 
 ## Running
 
-### macOS — double-click
+The application comes in two variants: a web interface (default) and a classic
+Tkinter desktop window.
+
+### Web interface (recommended)
+
+#### macOS — double-click
 
 1. Open the project folder in Finder.
 2. Double-click the **`start.command`** file.
 3. On the first launch, allow it in *System Settings → Privacy & Security*.
 
-> The `start.command` file checks for `python3` and, if it's missing, shows a
-> helpful message explaining how to install it.
+The `start.command` file checks for `python3`, installs Flask if needed, starts
+the server, and automatically opens the browser at `http://127.0.0.1:5000`.
 
-### From the command line (any OS)
+#### From the command line (any OS)
+
+```bash
+pip install -r requirements.txt   # install Flask
+python3 web_app.py                # start the server
+```
+
+Then open `http://127.0.0.1:5000` in your browser.
+
+### Desktop (Tkinter)
 
 ```bash
 python3 txt_file_splitter.py
 ```
 
+A classic application window opens. This variant requires no dependencies.
+
 ---
 
 ## Usage
+
+### Web interface
+
+1. **Source file** — choose the text file to split.
+2. **Size limit** — set the maximum size of a single part and pick a unit (Байт / КБ / МБ — bytes / KB / MB). Values use binary units (1 KB = 1024 bytes, 1 MB = 1024 KB).
+3. **Splitting mode** — choose one of the three modes (see the table above).
+4. **Separator** *(only in "By separator" mode)* — enter the separator string.
+5. Click **"Разделить"** (Split) — the browser downloads a `split_result.zip` with all parts. Nothing is stored on the server's disk.
+
+### Desktop (Tkinter)
 
 1. **Source file** — click "Обзор…" (Browse) and choose the text file to split.
 2. **Output folder** — choose where parts will be saved (defaults to the source file's folder).
@@ -91,8 +118,7 @@ python3 txt_file_splitter.py
 6. Click **"Разделить"** (Split) — the log shows progress and the number of created parts.
 7. The **"Открыть папку результата"** (Open output folder) button reveals the results in the file manager.
 
-> The interface is in Russian. The controls are, in order: source file → output
-> folder → size limit → mode → separator → Split button.
+> The interface is in Russian.
 
 ---
 
@@ -100,8 +126,12 @@ python3 txt_file_splitter.py
 
 ```
 .
-├── txt_file_splitter.py   # main application (logic + GUI)
-├── start.command           # double-click launcher for macOS
+├── txt_file_splitter.py   # splitting logic + desktop interface (Tkinter)
+├── web_app.py             # web interface (Flask)
+├── templates/
+│   └── index.html         # web interface page
+├── requirements.txt       # web version dependencies (Flask)
+├── start.command           # double-click launcher for the web version (macOS)
 ├── .gitignore
 ├── README.en.md            # this file (English)
 └── README.md               # documentation in Russian
