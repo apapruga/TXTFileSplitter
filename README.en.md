@@ -1,6 +1,7 @@
 # TXT File Splitter
 
-**README in other languages:** [Русский](README.md)
+[![English](https://img.shields.io/badge/lang-English-blue.svg)](README.en.md)
+[![Русский](https://img.shields.io/badge/lang-%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-lightgrey.svg)](README.md)
 
 A GUI application for splitting large text files into several parts based on a
 configurable size limit. Written in Python using Tkinter — no external
